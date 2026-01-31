@@ -1,0 +1,17 @@
+const product = "keyboards";
+const costPerUnit = 12.50;
+const basePrice = 19.99;
+const discountRate=0.15;
+const salesTaxRate=0.07;
+const fixedShippingCost= 480;
+let discountedPrice = basePrice * (1 - discountRate);
+let finalPriceWithTax = discountedPrice * (1 + salesTaxRate);
+let ProfitPerUnit = finalPriceWithTax - costPerUnit;
+let breakEvenUnits = Math.ceil(fixedShippingCost / ProfitPerUnit);
+let isProfitable = ProfitPerUnit > 0;
+console.log("Product:", product);
+console.log("Discounted Price (pre-tax): $", discountedPrice.toFixed(2));
+console.log("Final Price (with tax): $", finalPriceWithTax.toFixed(2));
+console.log("Profit Per Unit: $", ProfitPerUnit.toFixed(2));
+console.log("Break-Even Units:", breakEvenUnits);
+console.log("Is the product profitable?", isProfitable);
