@@ -1,0 +1,17 @@
+const product = "USC-C Cable";
+const unitCost = 3.25;
+const currentStock = 120;
+const reorderLevel = 89;
+const targetStock = 200;
+const weeklyDemand = 480;
+const supplierLeadTimeWeeks = 2;
+let weeksOfCover = weeklyDemand > 0 ? currentStock / weeklyDemand : Infinity;
+let stockDeficit = Math.max(0, targetStock - currentStock);
+let reorderQuantity = (currentStock <= reorderLevel || weeksOfCover < supplierLeadTimeWeeks) ? Math.ceil(stockDeficit) : 0;
+let estimatedReorder = reorderQuantity*unitCost;
+let reorderNow = currentStock <= reorderLevel || weeksOfCover < supplierLeadTimeWeeks;
+console.log("Product:", product);
+console.log("Weeks of Cover:", weeksOfCover.toFixed(2));
+console.log("Reorder now?", reorderNow);
+console.log("Reorder Quantity:", reorderQuantity);
+console.log("Estimated Cost: $" + estimatedReorder.toFixed(2));
