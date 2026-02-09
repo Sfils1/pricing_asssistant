@@ -1,0 +1,84 @@
+it should look like this after the change. everything else looks fine 
+ 
+const inventory = [
+  {
+    sku: "SKU001",
+    name: "USB-C Cable",
+    price: 9.99,
+    stockUnit: 120
+  },
+  {
+    sku: "SKU002",
+    name: "Wireless Mouse",
+    price: 24.99,
+    stockUnit: 75
+  },
+  {
+    sku: "SKU003",
+    name: "Keyboard",
+    price: 39.99,
+    stockUnit: 50
+  },
+  {
+    sku: "SKU004",
+    name: "Laptop Stand",
+    price: 29.99,
+    stockUnit: 40
+  }
+];
+inventory.forEach(item => {
+    console.log(`SKU: ${item.sku}, Name: ${item.name}, Price: $${item.price}, Stock Units: ${item.stockUnit}`);
+});
+console.log("Total Inventory Value: $" + inventory.reduce((total, item) => total + (item.price * item.stockUnit), 0).toFixed(2));
+inventory.push({ sku: "SKU005", name: "Webcam", price: 49.99, stockUnit: 30 });
+console.log("Added product: SKU005 - Webcam");
+const removed=inventory.pop();
+console.log(`Removed product: ${removed.sku} - ${removed.name}`);
+inventory[1].stockUnit -= 5;
+console.log(`Updated stock for SKU002 - Wireless Mouse: ${inventory[1].stockUnit} units remaining`);
+inventory[2].price = 34.99;
+console.log(`Updated price for SKU003 - Keyboard: $${inventory[2].price}`);
+let orders = [
+    {
+        orderId: "ORD001",
+        items: [{ sku: "SKU001", quantity: 2 },
+        { sku: "SKU002", quantity: 1 }]
+ 
+    },
+    {
+        orderId: "ORD002",
+        items: [{ sku: "SKU003", quantity: 1 },
+        { sku: "SKU004", quantity: 2 }]
+    }
+];
+function processOrder(order) {
+    for (let item of order.items) {
+        const product = inventory.find(p => p.sku === item.sku);
+        if(!product) return 'item ${item.sku} not found in inventory';
+        if(product.stockUnit < item.quantity) return 'insufficient stock for ${product.name}';
+        product.stockUnit -= item.quantity;
+    }
+ 
+    let total = 0;
+    order.items.forEach(item => {
+        const product = inventory.find(p => p.sku === item.sku);
+        total += product.price * item.quantity;
+    });
+    return `Order ${order.orderId} processed. Total: $${total.toFixed(2)}`;
+}
+orders.forEach(order => console.log(processOrder(order)));
+console.log("n---reporting---");
+const totalValue = inventory.reduce((total, item) => total + (item.price * item.stockUnit), 0);
+console.log(`Total Inventory Value: $${totalValue.toFixed(2)}`);
+const lowStockItems = inventory.filter(item => item.stockUnit < 20);
+console.log("Low Stock Items:");
+const priceList = inventory.map(item => ({ sku: item.sku, name: item.name, price: item.price }));
+console.log("Price List:");
+inventory.forEach(p =>p.discountrate = (p.price * 0.1).toFixed(2));
+function findProductBySKU(sku) {
+    return inventory.find(item => item.sku === sku) || 'Product not found';
+}
+console.log(findProductBySKU("SKU002"));
+const sortedByStock = [...inventory].sort((a, b) => a.stockUnit - b.stockUnit);
+console.log("Sorted by Stock:", sortedByStock);
+ 
